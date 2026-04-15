@@ -37,6 +37,44 @@ Python 3.10+ required.
 
 ## Quick start
 
+### Inspect generated SQL without a Snowflake account
+
+You can call `build()` to see exactly what SQL will be executed — no connection required:
+
+```python
+from unittest.mock import MagicMock
+from snowforge import MergeBuilder
+
+builder = MergeBuilder(
+    conn=MagicMock(),
+    target_table="MYDB.PUBLIC.ORDERS",
+    source_query="SELECT order_id, status, updated_at FROM MYDB.STAGING.ORDERS",
+    match_keys=["order_id"],
+)
+print(builder.build())
+```
+
+Output:
+
+```sql
+MERGE INTO "MYDB"."PUBLIC"."ORDERS" AS target
+USING (
+  SELECT
+    order_id,
+    status,
+    updated_at
+  FROM MYDB.STAGING.ORDERS
+) AS source
+ON target."order_id" = source."order_id"
+WHEN MATCHED THEN UPDATE SET
+  target."status" = source."status",
+  target."updated_at" = source."updated_at"
+WHEN NOT MATCHED THEN INSERT ("order_id", "status", "updated_at")
+  VALUES (source."order_id", source."status", source."updated_at")
+```
+
+### Execute against Snowflake
+
 ```python
 from snowforge import SnowforgeConnection, MergeBuilder
 
@@ -51,7 +89,7 @@ with SnowforgeConnection() as conn:       # reads SNOWFLAKE_* env vars
     print(f"Inserted: {result.rows_inserted}, Updated: {result.rows_updated}")
 ```
 
-**Schema diffing:**
+### Schema diffing
 
 ```python
 from snowforge import SchemaInspector
@@ -61,7 +99,31 @@ if diff.is_breaking:
     print(diff.to_markdown())    # ready to paste into a GitHub PR comment
 ```
 
-**Query profiling:**
+Example output:
+
+```markdown
+## Schema Diff **[BREAKING]**
+
+### Added columns
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| `discount` | `NUMBER(10,2)` | Yes | `—` |
+
+### Removed columns ⚠️
+
+| Column | Type | Nullable |
+|--------|------|----------|
+| `old_ref` | `VARCHAR(50)` | No |
+
+### Type changes
+
+| Column | Old type | New type | Breaking? |
+|--------|----------|----------|-----------|
+| `status` | `VARCHAR(256)` | `VARCHAR(64)` | Yes ⚠️ |
+```
+
+### Query profiling
 
 ```python
 from snowforge import QueryProfiler
@@ -71,7 +133,7 @@ for q in QueryProfiler(conn).top_expensive(n=10, lookback_hours=24):
         print(f"  {q.query_id}: {hint}")
 ```
 
-**SCD Type 2:**
+### SCD Type 2
 
 ```python
 from snowforge import SCDManager

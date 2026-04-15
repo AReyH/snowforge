@@ -46,3 +46,6 @@ site/
 .env
 .env.*
 secrets.json
+
+# Claude
+.claude/
