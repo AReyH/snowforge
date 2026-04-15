@@ -1,4 +1,4 @@
-"""Custom exception hierarchy for snowforge.
+"""Custom exception hierarchy for snowcraft.
 
 All public-facing errors raised by this library inherit from ``SnowforgeError``
 so callers can catch the base class for broad handling or specific subclasses
@@ -7,7 +7,7 @@ for fine-grained recovery logic.
 
 
 class SnowforgeError(Exception):
-    """Base exception for all snowforge errors."""
+    """Base exception for all snowcraft errors."""
 
 
 class ConnectionError(SnowforgeError):

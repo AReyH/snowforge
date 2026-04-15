@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-pip install snowforge
+pip install snowcraft
 ```
 
 Python 3.10+ required.
@@ -12,7 +12,7 @@ Python 3.10+ required.
 
 ## Configuration
 
-snowforge reads Snowflake credentials from environment variables by default:
+snowcraft reads Snowflake credentials from environment variables by default:
 
 ```bash
 export SNOWFLAKE_ACCOUNT=your_account.us-east-1
@@ -27,7 +27,7 @@ export SNOWFLAKE_ROLE=SYSADMIN
 You can also pass credentials directly:
 
 ```python
-from snowforge import SnowforgeConnection
+from snowcraft import SnowforgeConnection
 
 conn = SnowforgeConnection(
     account="your_account.us-east-1",
@@ -45,7 +45,7 @@ conn = SnowforgeConnection(
 generated SQL is always inspectable before execution via `build()`.
 
 ```python
-from snowforge import SnowforgeConnection, MergeBuilder
+from snowcraft import SnowforgeConnection, MergeBuilder
 
 with SnowforgeConnection() as conn:
     builder = MergeBuilder(
@@ -85,7 +85,7 @@ Use `SchemaInspector` to detect breaking schema changes before a deployment or
 migration. The output is clean enough to post directly in a GitHub PR comment.
 
 ```python
-from snowforge import SnowforgeConnection, SchemaInspector
+from snowcraft import SnowforgeConnection, SchemaInspector
 
 with SnowforgeConnection() as conn:
     inspector = SchemaInspector(conn)
@@ -112,7 +112,7 @@ with SnowforgeConnection() as conn:
 leaving the Python REPL.
 
 ```python
-from snowforge import SnowforgeConnection, QueryProfiler
+from snowcraft import SnowforgeConnection, QueryProfiler
 
 with SnowforgeConnection() as conn:
     profiler = QueryProfiler(conn)
@@ -141,7 +141,7 @@ with SnowforgeConnection() as conn:
 ### SCD Type 1 (overwrite)
 
 ```python
-from snowforge import SnowforgeConnection, SCDManager
+from snowcraft import SnowforgeConnection, SCDManager
 
 with SnowforgeConnection() as conn:
     manager = SCDManager(
@@ -169,10 +169,10 @@ columns (customisable via the constructor arguments). Active records will have
 
 ## Error handling
 
-All snowforge errors inherit from `SnowforgeError`:
+All snowcraft errors inherit from `SnowforgeError`:
 
 ```python
-from snowforge.exceptions import SnowforgeError, MergeError
+from snowcraft.exceptions import SnowforgeError, MergeError
 
 try:
     result = builder.execute()

@@ -14,8 +14,8 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Literal
 
-from snowforge.connection import SnowforgeConnection
-from snowforge.exceptions import ProfilerError
+from snowcraft.connection import SnowforgeConnection
+from snowcraft.exceptions import ProfilerError
 
 # Default USD cost per credit. Enterprise vs. Business Critical pricing differs;
 # override via the ``credit_price_usd`` parameter on individual methods.

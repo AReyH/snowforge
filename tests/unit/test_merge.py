@@ -1,4 +1,4 @@
-"""Unit tests for snowforge.merge.
+"""Unit tests for snowcraft.merge.
 
 All tests mock the Snowflake connection and cursor — no real warehouse is used.
 Tests focus on SQL generation correctness, parameter validation, and result
@@ -11,8 +11,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from snowforge.exceptions import MergeError
-from snowforge.merge import MergeBuilder, MergeResult, _extract_select_columns, _inject_watermark
+from snowcraft.exceptions import MergeError
+from snowcraft.merge import MergeBuilder, MergeResult, _extract_select_columns, _inject_watermark
 
 # ---------------------------------------------------------------------------
 # _extract_select_columns

@@ -1,21 +1,21 @@
-# snowforge
+# snowcraft
 
 > The Snowflake standard library that never shipped.
 
-`snowforge` is a Python toolkit that wraps the most common, tedious Snowflake
+`snowcraft` is a Python toolkit that wraps the most common, tedious Snowflake
 operations into clean, tested, pip-installable functions.
 
 ---
 
-## Why snowforge?
+## Why snowcraft?
 
 Data engineers who work with Snowflake spend a disproportionate amount of time
 rewriting the same boilerplate: MERGE statements for incremental loads, schema
 diffs before deployments, cost queries to find runaway warehouses, SCD Type 2
-logic, and so on. `snowforge` codifies those patterns into a stable, typed,
+logic, and so on. `snowcraft` codifies those patterns into a stable, typed,
 well-tested API so teams can stop copy-pasting and start importing.
 
-## What snowforge is NOT
+## What snowcraft is NOT
 
 - It is **not** an ORM — it does not abstract SQL away.
 - It is **not** a replacement for dbt, SQLMesh, or any transformation framework.
@@ -39,7 +39,7 @@ well-tested API so teams can stop copy-pasting and start importing.
 ## Quick example
 
 ```python
-from snowforge import SnowforgeConnection, MergeBuilder
+from snowcraft import SnowforgeConnection, MergeBuilder
 
 with SnowforgeConnection() as conn:
     result = MergeBuilder(

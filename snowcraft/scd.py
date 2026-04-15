@@ -9,10 +9,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from snowforge.connection import SnowforgeConnection
-from snowforge.exceptions import MergeError
-from snowforge.merge import MergeBuilder, MergeResult
-from snowforge.utils import quote_identifier, quote_table
+from snowcraft.connection import SnowforgeConnection
+from snowcraft.exceptions import MergeError
+from snowcraft.merge import MergeBuilder, MergeResult
+from snowcraft.utils import quote_identifier, quote_table
 
 # Industry-standard sentinel for "currently active" in SCD Type 2 tables.
 # Using a concrete date (rather than NULL) simplifies range queries with
@@ -233,7 +233,7 @@ class SCDManager:
         """
         # Determine source columns by inspecting the SELECT column list.
         # We need explicit column names to build the INSERT statement.
-        from snowforge.merge import _extract_select_columns  # avoid circular at module level
+        from snowcraft.merge import _extract_select_columns  # avoid circular at module level
 
         source_columns = _extract_select_columns(self._source_query)
         if not source_columns:

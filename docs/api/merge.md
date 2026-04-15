@@ -1,5 +1,5 @@
 # Merge
 
-::: snowforge.merge.MergeBuilder
+::: snowcraft.merge.MergeBuilder
 
-::: snowforge.merge.MergeResult
+::: snowcraft.merge.MergeResult

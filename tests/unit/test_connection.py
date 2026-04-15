@@ -1,4 +1,4 @@
-"""Unit tests for snowforge.connection.
+"""Unit tests for snowcraft.connection.
 
 Tests mock snowflake.connector.connect() entirely — no real Snowflake
 connection is used.
@@ -10,8 +10,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from snowforge.connection import SnowforgeConnection
-from snowforge.exceptions import ConnectionError as SnowforgeConnectionError
+from snowcraft.connection import SnowforgeConnection
+from snowcraft.exceptions import ConnectionError as SnowforgeConnectionError
 
 # ---------------------------------------------------------------------------
 # Construction and validation

@@ -1,5 +1,5 @@
 # SCD
 
-::: snowforge.scd.SCDManager
+::: snowcraft.scd.SCDManager
 
-::: snowforge.scd.SCDResult
+::: snowcraft.scd.SCDResult

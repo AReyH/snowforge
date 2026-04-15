@@ -1,7 +1,7 @@
 # Schema
 
-::: snowforge.schema.SchemaInspector
+::: snowcraft.schema.SchemaInspector
 
-::: snowforge.schema.SchemaDiff
+::: snowcraft.schema.SchemaDiff
 
-::: snowforge.schema.ColumnDef
+::: snowcraft.schema.ColumnDef

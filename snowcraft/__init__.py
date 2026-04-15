@@ -1,4 +1,4 @@
-"""snowforge — the Snowflake standard library that never shipped.
+"""snowcraft — the Snowflake standard library that never shipped.
 
 Provides clean, typed, well-tested wrappers around the most common Snowflake
 operations so data engineers can stop copy-pasting boilerplate and start
@@ -11,7 +11,7 @@ Connection
 ~~~~~~~~~~
 .. code-block:: python
 
-    from snowforge import SnowforgeConnection
+    from snowcraft import SnowforgeConnection
 
     with SnowforgeConnection() as conn:
         conn.execute("SELECT CURRENT_USER()")
@@ -20,7 +20,7 @@ MERGE / Incremental loads
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: python
 
-    from snowforge import MergeBuilder, MergeResult
+    from snowcraft import MergeBuilder, MergeResult
 
     result: MergeResult = MergeBuilder(
         conn=conn,
@@ -33,7 +33,7 @@ Schema inspection and diffing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: python
 
-    from snowforge import SchemaInspector, SchemaDiff
+    from snowcraft import SchemaInspector, SchemaDiff
 
     diff: SchemaDiff = SchemaInspector(conn).diff(
         source="MYDB.STAGING.ORDERS",
@@ -45,7 +45,7 @@ Query profiling
 ~~~~~~~~~~~~~~~
 .. code-block:: python
 
-    from snowforge import QueryProfiler
+    from snowcraft import QueryProfiler
 
     for q in QueryProfiler(conn).top_expensive(n=10):
         print(q.query_id, q.optimization_hints)
@@ -54,7 +54,7 @@ Slowly Changing Dimensions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: python
 
-    from snowforge import SCDManager
+    from snowcraft import SCDManager
 
     SCDManager(
         conn=conn,
@@ -68,21 +68,21 @@ Exceptions
 ~~~~~~~~~~
 .. code-block:: python
 
-    from snowforge.exceptions import SnowforgeError, MergeError
+    from snowcraft.exceptions import SnowforgeError, MergeError
 """
 
-from snowforge.connection import SnowforgeConnection
-from snowforge.exceptions import (
+from snowcraft.connection import SnowforgeConnection
+from snowcraft.exceptions import (
     ConnectionError,
     MergeError,
     ProfilerError,
     SchemaError,
     SnowforgeError,
 )
-from snowforge.merge import MergeBuilder, MergeResult
-from snowforge.profiler import CostSummary, QueryProfiler, QuerySummary
-from snowforge.scd import SCDManager, SCDResult
-from snowforge.schema import ColumnDef, SchemaDiff, SchemaInspector
+from snowcraft.merge import MergeBuilder, MergeResult
+from snowcraft.profiler import CostSummary, QueryProfiler, QuerySummary
+from snowcraft.scd import SCDManager, SCDResult
+from snowcraft.schema import ColumnDef, SchemaDiff, SchemaInspector
 
 __all__ = [
     # Connection

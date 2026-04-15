@@ -1,4 +1,4 @@
-"""Shared pytest fixtures for snowforge tests.
+"""Shared pytest fixtures for snowcraft tests.
 
 Unit test fixtures mock the Snowflake cursor entirely — no live connection is
 needed or used. Integration test fixtures require the ``SNOWFLAKE_*`` environment
@@ -12,7 +12,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from snowforge.connection import SnowforgeConnection
+from snowcraft.connection import SnowforgeConnection
 
 # ---------------------------------------------------------------------------
 # Unit test fixtures — fully mocked, no real Snowflake connection

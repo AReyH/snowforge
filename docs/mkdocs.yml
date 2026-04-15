@@ -1,8 +1,8 @@
-site_name: snowforge
+site_name: snowcraft
 site_description: The Snowflake standard library that never shipped.
 site_author: Arturo Rey
-repo_url: https://github.com/AReyH/snowforge
-repo_name: AReyH/snowforge
+repo_url: https://github.com/AReyH/snowcraft
+repo_name: AReyH/snowcraft
 
 theme:
   name: material

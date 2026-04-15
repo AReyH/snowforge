@@ -1,7 +1,7 @@
 # Profiler
 
-::: snowforge.profiler.QueryProfiler
+::: snowcraft.profiler.QueryProfiler
 
-::: snowforge.profiler.QuerySummary
+::: snowcraft.profiler.QuerySummary
 
-::: snowforge.profiler.CostSummary
+::: snowcraft.profiler.CostSummary

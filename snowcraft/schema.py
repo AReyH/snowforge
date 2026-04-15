@@ -9,8 +9,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from snowforge.connection import SnowforgeConnection
-from snowforge.exceptions import SchemaError
+from snowcraft.connection import SnowforgeConnection
+from snowcraft.exceptions import SchemaError
 
 
 @dataclass

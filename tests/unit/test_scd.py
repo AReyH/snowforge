@@ -1,4 +1,4 @@
-"""Unit tests for snowforge.scd.
+"""Unit tests for snowcraft.scd.
 
 Tests cover construction validation, SQL generation for Type 1 and Type 2
 operations, and transaction/error handling.
@@ -10,8 +10,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from snowforge.exceptions import MergeError
-from snowforge.scd import SCDManager, SCDResult
+from snowcraft.exceptions import MergeError
+from snowcraft.scd import SCDManager, SCDResult
 
 # ---------------------------------------------------------------------------
 # SCDManager construction

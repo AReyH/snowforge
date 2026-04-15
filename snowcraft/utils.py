@@ -1,7 +1,7 @@
-"""Internal shared utilities for snowforge.
+"""Internal shared utilities for snowcraft.
 
 This module is not part of the public API. Functions here may change without
-notice between releases. Import from ``snowforge`` directly for the stable API.
+notice between releases. Import from ``snowcraft`` directly for the stable API.
 """
 
 from __future__ import annotations

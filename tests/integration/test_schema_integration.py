@@ -1,4 +1,4 @@
-"""Integration tests for snowforge.schema.
+"""Integration tests for snowcraft.schema.
 
 These tests require a live Snowflake connection and are automatically skipped
 when the ``SNOWFLAKE_ACCOUNT`` environment variable is not set.
@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import pytest
 
-from snowforge.connection import SnowforgeConnection
-from snowforge.schema import SchemaDiff, SchemaInspector
+from snowcraft.connection import SnowforgeConnection
+from snowcraft.schema import SchemaDiff, SchemaInspector
 
 
 @pytest.mark.usefixtures("integration_database")

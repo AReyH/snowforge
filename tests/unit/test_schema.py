@@ -1,4 +1,4 @@
-"""Unit tests for snowforge.schema.
+"""Unit tests for snowcraft.schema.
 
 Tests cover column metadata parsing, diff logic, the is_breaking flag,
 and the Markdown / dict serialisation methods.
@@ -10,8 +10,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from snowforge.exceptions import SchemaError
-from snowforge.schema import (
+from snowcraft.exceptions import SchemaError
+from snowcraft.schema import (
     ColumnDef,
     SchemaDiff,
     SchemaInspector,

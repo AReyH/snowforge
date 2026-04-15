@@ -1,4 +1,4 @@
-"""Integration tests for snowforge.merge.
+"""Integration tests for snowcraft.merge.
 
 These tests require a live Snowflake connection and are automatically skipped
 when the ``SNOWFLAKE_ACCOUNT`` environment variable is not set.
@@ -13,8 +13,8 @@ from collections.abc import Generator
 
 import pytest
 
-from snowforge.connection import SnowforgeConnection
-from snowforge.merge import MergeBuilder, MergeResult
+from snowcraft.connection import SnowforgeConnection
+from snowcraft.merge import MergeBuilder, MergeResult
 
 _TARGET = "SNOWFORGE_TEST.PUBLIC.ORDERS_TARGET"
 _STAGING = "SNOWFORGE_TEST.PUBLIC.ORDERS_STAGING"

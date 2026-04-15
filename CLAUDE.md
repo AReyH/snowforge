@@ -1,4 +1,4 @@
-# CLAUDE.md — snowforge
+# CLAUDE.md — snowcraft
 
 > A Python toolkit that wraps the most common, tedious Snowflake operations into
 > clean, tested, pip-installable functions. Think of it as the standard library
@@ -8,8 +8,8 @@
 
 ## Project Overview
 
-**Package name:** `snowforge`
-**PyPI target:** `pip install snowforge`
+**Package name:** `snowcraft`
+**PyPI target:** `pip install snowcraft`
 **Author:** Arturo Rey
 **Python support:** 3.10+
 **License:** MIT
@@ -19,7 +19,7 @@
 Data engineers who work with Snowflake spend a disproportionate amount of time
 rewriting the same boilerplate: MERGE statements for incremental loads, schema
 diffs before deployments, cost queries to find runaway warehouses, SCD Type 2
-logic, and so on. `snowforge` codifies those patterns into a stable, typed,
+logic, and so on. `snowcraft` codifies those patterns into a stable, typed,
 well-tested API so teams can stop copy-pasting and start importing.
 
 ### What this package does NOT do
@@ -34,7 +34,7 @@ well-tested API so teams can stop copy-pasting and start importing.
 ## Repository Structure
 
 ```
-snowforge/
+snowcraft/
 ├── CLAUDE.md                  # This file
 ├── README.md
 ├── pyproject.toml             # Single source of truth for packaging + deps
@@ -56,7 +56,7 @@ snowforge/
 │   └── integration/           # Require SNOWFLAKE_* env vars, skipped in CI by default
 │       ├── test_merge_integration.py
 │       └── test_schema_integration.py
-└── snowforge/
+└── snowcraft/
     ├── __init__.py            # Re-exports the public API surface
     ├── connection.py          # Connection helpers and context managers
     ├── merge.py               # Incremental load / MERGE statement builder
@@ -91,8 +91,8 @@ snowforge/
 
 ```bash
 # Clone and enter the repo
-git clone https://github.com/AReyH/snowforge.git
-cd snowforge
+git clone https://github.com/AReyH/snowcraft.git
+cd snowcraft
 
 # Create a virtual environment (Python 3.10+)
 python -m venv .venv
@@ -103,7 +103,7 @@ pip install -e ".[dev]"
 
 # Verify everything works
 ruff check .
-mypy snowforge/
+mypy snowcraft/
 pytest tests/unit/ -v
 ```
 
@@ -126,7 +126,7 @@ run integration tests in CI unless you have a dedicated test account.
 
 ## Module Specifications
 
-### `snowforge/connection.py`
+### `snowcraft/connection.py`
 
 Provides a thin wrapper around `snowflake.connector.connect()` that supports
 both direct credential passing and environment variable resolution. Exposes a
@@ -157,7 +157,7 @@ with SnowforgeConnection() as conn:
 
 ---
 
-### `snowforge/merge.py`
+### `snowcraft/merge.py`
 
 The centerpiece module. Generates and executes MERGE INTO statements for
 incremental loads, abstracting away the boilerplate of match conditions,
@@ -215,7 +215,7 @@ VALUES (source.order_id, source.status, source.updated_at);
 
 ---
 
-### `snowforge/schema.py`
+### `snowcraft/schema.py`
 
 Schema introspection and diffing. Given two fully-qualified table names (or
 schemas), produce a structured diff that can be used in CI gates, alerting, or
@@ -258,7 +258,7 @@ class SchemaDiff:
 
 ---
 
-### `snowforge/profiler.py`
+### `snowcraft/profiler.py`
 
 Wraps Snowflake's `QUERY_HISTORY` and `WAREHOUSE_METERING_HISTORY` views to
 surface expensive queries, slow patterns, and cost attribution.
@@ -316,7 +316,7 @@ class CostSummary:
 
 ---
 
-### `snowforge/scd.py`
+### `snowcraft/scd.py`
 
 Slowly Changing Dimension helpers for Type 1 (overwrite) and Type 2 (versioned history).
 
@@ -430,10 +430,10 @@ ruff check . --fix
 ruff format .
 
 # Type check
-mypy snowforge/
+mypy snowcraft/
 
 # Run unit tests with coverage
-pytest tests/unit/ -v --cov=snowforge --cov-report=term-missing
+pytest tests/unit/ -v --cov=snowcraft --cov-report=term-missing
 
 # Run all tests including integration (requires env vars)
 pytest tests/ -v
@@ -470,16 +470,16 @@ passing CI run.
 
 These are not yet implemented but are planned for future minor releases:
 
-- `snowforge/clone.py` — Zero-copy clone management for dev/test environment
+- `snowcraft/clone.py` — Zero-copy clone management for dev/test environment
   provisioning. Automate creating a cloned dev environment from prod, running
   tests, and tearing it down.
-- `snowforge/rbac.py` — Role and privilege auditing. Answer questions like
+- `snowcraft/rbac.py` — Role and privilege auditing. Answer questions like
   "which roles have access to this table?" and "which users have ACCOUNTADMIN?"
   programmatically.
-- `snowforge/tasks.py` — Wrapper around Snowflake Tasks for defining and
+- `snowcraft/tasks.py` — Wrapper around Snowflake Tasks for defining and
   managing scheduled SQL with Python, as an alternative to Airflow for
   Snowflake-native orchestration.
-- `snowforge/streams.py` — Helpers for working with Snowflake Streams (CDC),
+- `snowcraft/streams.py` — Helpers for working with Snowflake Streams (CDC),
   including stream lag monitoring and consuming stream data into target tables.
 
 ---

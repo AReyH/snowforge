@@ -1,11 +1,11 @@
 # Exceptions
 
-::: snowforge.exceptions.SnowforgeError
+::: snowcraft.exceptions.SnowforgeError
 
-::: snowforge.exceptions.ConnectionError
+::: snowcraft.exceptions.ConnectionError
 
-::: snowforge.exceptions.SchemaError
+::: snowcraft.exceptions.SchemaError
 
-::: snowforge.exceptions.MergeError
+::: snowcraft.exceptions.MergeError
 
-::: snowforge.exceptions.ProfilerError
+::: snowcraft.exceptions.ProfilerError

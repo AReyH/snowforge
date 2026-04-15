@@ -1,4 +1,4 @@
-"""Unit tests for snowforge.profiler.
+"""Unit tests for snowcraft.profiler.
 
 Tests cover heuristic hint generation logic, row-to-dataclass parsing,
 query construction, and error handling — all without a real Snowflake
@@ -12,8 +12,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from snowforge.exceptions import ProfilerError
-from snowforge.profiler import (
+from snowcraft.exceptions import ProfilerError
+from snowcraft.profiler import (
     CostSummary,
     QueryProfiler,
     QuerySummary,

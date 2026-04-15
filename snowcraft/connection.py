@@ -13,7 +13,7 @@ from typing import Any
 import snowflake.connector
 import snowflake.connector.cursor
 
-from snowforge.exceptions import ConnectionError as SnowforgeConnectionError
+from snowcraft.exceptions import ConnectionError as SnowforgeConnectionError
 
 
 class SnowforgeConnection:

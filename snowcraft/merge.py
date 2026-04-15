@@ -1,6 +1,6 @@
 """Incremental load / MERGE statement builder.
 
-This module is the centerpiece of snowforge. It generates and executes Snowflake
+This module is the centerpiece of snowcraft. It generates and executes Snowflake
 ``MERGE INTO`` statements for incremental loads, abstracting away the boilerplate
 of match conditions, update clauses, insert clauses, and watermark management.
 
@@ -18,9 +18,9 @@ from typing import Literal
 import sqlglot
 import sqlglot.expressions as exp
 
-from snowforge.connection import SnowforgeConnection
-from snowforge.exceptions import MergeError
-from snowforge.utils import build_table_expr, quote_identifier
+from snowcraft.connection import SnowforgeConnection
+from snowcraft.exceptions import MergeError
+from snowcraft.utils import build_table_expr, quote_identifier
 
 
 @dataclass
