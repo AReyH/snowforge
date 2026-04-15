@@ -1,6 +1,6 @@
 # Exceptions
 
-::: snowcraft.exceptions.SnowforgeError
+::: snowcraft.exceptions.SnowcraftError
 
 ::: snowcraft.exceptions.ConnectionError
 

@@ -39,9 +39,9 @@ well-tested API so teams can stop copy-pasting and start importing.
 ## Quick example
 
 ```python
-from snowcraft import SnowforgeConnection, MergeBuilder
+from snowcraft import SnowcraftConnection, MergeBuilder
 
-with SnowforgeConnection() as conn:
+with SnowcraftConnection() as conn:
     result = MergeBuilder(
         conn=conn,
         target_table="MYDB.PUBLIC.ORDERS",

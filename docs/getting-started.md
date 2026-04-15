@@ -27,9 +27,9 @@ export SNOWFLAKE_ROLE=SYSADMIN
 You can also pass credentials directly:
 
 ```python
-from snowcraft import SnowforgeConnection
+from snowcraft import SnowcraftConnection
 
-conn = SnowforgeConnection(
+conn = SnowcraftConnection(
     account="your_account.us-east-1",
     user="your_user",
     password="your_password",
@@ -45,9 +45,9 @@ conn = SnowforgeConnection(
 generated SQL is always inspectable before execution via `build()`.
 
 ```python
-from snowcraft import SnowforgeConnection, MergeBuilder
+from snowcraft import SnowcraftConnection, MergeBuilder
 
-with SnowforgeConnection() as conn:
+with SnowcraftConnection() as conn:
     builder = MergeBuilder(
         conn=conn,
         target_table="MYDB.PUBLIC.ORDERS",
@@ -72,7 +72,7 @@ builder = MergeBuilder(
     source_query="SELECT event_id, event_type, created_at FROM MYDB.STAGING.EVENTS",
     match_keys=["event_id"],
     watermark_column="created_at",
-    watermark_table="MYDB.PUBLIC.SNOWFORGE_WATERMARKS",
+    watermark_table="MYDB.PUBLIC.SNOWCRAFT_WATERMARKS",
 )
 result = builder.execute()  # automatically filters and updates the watermark
 ```
@@ -85,9 +85,9 @@ Use `SchemaInspector` to detect breaking schema changes before a deployment or
 migration. The output is clean enough to post directly in a GitHub PR comment.
 
 ```python
-from snowcraft import SnowforgeConnection, SchemaInspector
+from snowcraft import SnowcraftConnection, SchemaInspector
 
-with SnowforgeConnection() as conn:
+with SnowcraftConnection() as conn:
     inspector = SchemaInspector(conn)
 
     diff = inspector.diff(
@@ -112,9 +112,9 @@ with SnowforgeConnection() as conn:
 leaving the Python REPL.
 
 ```python
-from snowcraft import SnowforgeConnection, QueryProfiler
+from snowcraft import SnowcraftConnection, QueryProfiler
 
-with SnowforgeConnection() as conn:
+with SnowcraftConnection() as conn:
     profiler = QueryProfiler(conn)
 
     # Top 20 slowest queries in the last 24 hours
@@ -141,9 +141,9 @@ with SnowforgeConnection() as conn:
 ### SCD Type 1 (overwrite)
 
 ```python
-from snowcraft import SnowforgeConnection, SCDManager
+from snowcraft import SnowcraftConnection, SCDManager
 
-with SnowforgeConnection() as conn:
+with SnowcraftConnection() as conn:
     manager = SCDManager(
         conn=conn,
         target_table="MYDB.DW.DIM_CUSTOMER",
@@ -169,16 +169,16 @@ columns (customisable via the constructor arguments). Active records will have
 
 ## Error handling
 
-All snowcraft errors inherit from `SnowforgeError`:
+All snowcraft errors inherit from `SnowcraftError`:
 
 ```python
-from snowcraft.exceptions import SnowforgeError, MergeError
+from snowcraft.exceptions import SnowcraftError, MergeError
 
 try:
     result = builder.execute()
 except MergeError as e:
     print(f"Merge failed: {e}")
     # e.__cause__ contains the original Snowflake connector exception
-except SnowforgeError as e:
-    print(f"Snowforge error: {e}")
+except SnowcraftError as e:
+    print(f"Snowcraft error: {e}")
 ```

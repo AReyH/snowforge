@@ -10,37 +10,37 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from snowcraft.connection import SnowforgeConnection
-from snowcraft.exceptions import ConnectionError as SnowforgeConnectionError
+from snowcraft.connection import SnowcraftConnection
+from snowcraft.exceptions import ConnectionError as SnowcraftConnectionError
 
 # ---------------------------------------------------------------------------
 # Construction and validation
 # ---------------------------------------------------------------------------
 
 
-class TestSnowforgeConnectionConstruction:
+class TestSnowcraftConnectionConstruction:
     def test_explicit_credentials_accepted(self) -> None:
-        conn = SnowforgeConnection(account="acct", user="usr", password="pw")
+        conn = SnowcraftConnection(account="acct", user="usr", password="pw")
         assert conn._account == "acct"
         assert conn._user == "usr"
 
     def test_missing_account_raises(self) -> None:
-        with pytest.raises(SnowforgeConnectionError, match="account"):
-            SnowforgeConnection(user="u", password="p")
+        with pytest.raises(SnowcraftConnectionError, match="account"):
+            SnowcraftConnection(user="u", password="p")
 
     def test_missing_user_raises(self) -> None:
-        with pytest.raises(SnowforgeConnectionError, match="user"):
-            SnowforgeConnection(account="a", password="p")
+        with pytest.raises(SnowcraftConnectionError, match="user"):
+            SnowcraftConnection(account="a", password="p")
 
     def test_missing_password_raises(self) -> None:
-        with pytest.raises(SnowforgeConnectionError, match="password"):
-            SnowforgeConnection(account="a", user="u")
+        with pytest.raises(SnowcraftConnectionError, match="password"):
+            SnowcraftConnection(account="a", user="u")
 
     def test_env_var_fallback(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setenv("SNOWFLAKE_ACCOUNT", "env_acct")
         monkeypatch.setenv("SNOWFLAKE_USER", "env_user")
         monkeypatch.setenv("SNOWFLAKE_PASSWORD", "env_pw")
-        conn = SnowforgeConnection()
+        conn = SnowcraftConnection()
         assert conn._account == "env_acct"
         assert conn._user == "env_user"
 
@@ -48,7 +48,7 @@ class TestSnowforgeConnectionConstruction:
         monkeypatch.setenv("SNOWFLAKE_ACCOUNT", "env_acct")
         monkeypatch.setenv("SNOWFLAKE_USER", "env_user")
         monkeypatch.setenv("SNOWFLAKE_PASSWORD", "env_pw")
-        conn = SnowforgeConnection(account="explicit")
+        conn = SnowcraftConnection(account="explicit")
         assert conn._account == "explicit"
 
     def test_optional_params_from_env(self, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -58,14 +58,14 @@ class TestSnowforgeConnectionConstruction:
         monkeypatch.setenv("SNOWFLAKE_DATABASE", "DB")
         monkeypatch.setenv("SNOWFLAKE_WAREHOUSE", "WH")
         monkeypatch.setenv("SNOWFLAKE_ROLE", "ROLE")
-        conn = SnowforgeConnection()
+        conn = SnowcraftConnection()
         assert conn._database == "DB"
         assert conn._warehouse == "WH"
         assert conn._role == "ROLE"
 
     def test_multiple_missing_params_listed(self) -> None:
-        with pytest.raises(SnowforgeConnectionError) as exc_info:
-            SnowforgeConnection()
+        with pytest.raises(SnowcraftConnectionError) as exc_info:
+            SnowcraftConnection()
         msg = str(exc_info.value)
         assert "account" in msg
         assert "user" in msg
@@ -78,10 +78,10 @@ class TestSnowforgeConnectionConstruction:
 
 
 class TestBuildConnectKwargs:
-    def _conn(self, **kwargs: str) -> SnowforgeConnection:
+    def _conn(self, **kwargs: str) -> SnowcraftConnection:
         defaults = {"account": "a", "user": "u", "password": "p"}
         defaults.update(kwargs)
-        return SnowforgeConnection(**defaults)
+        return SnowcraftConnection(**defaults)
 
     def test_required_params_always_present(self) -> None:
         kw = self._conn()._build_connect_kwargs()
@@ -110,8 +110,8 @@ class TestBuildConnectKwargs:
 
 
 class TestConnectAndClose:
-    def _conn(self) -> SnowforgeConnection:
-        return SnowforgeConnection(account="a", user="u", password="p")
+    def _conn(self) -> SnowcraftConnection:
+        return SnowcraftConnection(account="a", user="u", password="p")
 
     def test_connect_calls_snowflake_connector(self) -> None:
         conn = self._conn()
@@ -129,7 +129,7 @@ class TestConnectAndClose:
             "snowflake.connector.connect",
             side_effect=snowflake.connector.Error("bad creds"),
         ):
-            with pytest.raises(SnowforgeConnectionError, match="Failed to connect"):
+            with pytest.raises(SnowcraftConnectionError, match="Failed to connect"):
                 conn.connect()
 
     def test_close_calls_underlying_close(self) -> None:
@@ -152,8 +152,8 @@ class TestConnectAndClose:
 
 
 class TestCursorAndExecute:
-    def _connected_conn(self) -> SnowforgeConnection:
-        conn = SnowforgeConnection(account="a", user="u", password="p")
+    def _connected_conn(self) -> SnowcraftConnection:
+        conn = SnowcraftConnection(account="a", user="u", password="p")
         conn._raw_conn = MagicMock()
         return conn
 
@@ -164,8 +164,8 @@ class TestCursorAndExecute:
         assert conn.cursor() is mock_cursor
 
     def test_cursor_raises_when_not_connected(self) -> None:
-        conn = SnowforgeConnection(account="a", user="u", password="p")
-        with pytest.raises(SnowforgeConnectionError, match="not open"):
+        conn = SnowcraftConnection(account="a", user="u", password="p")
+        with pytest.raises(SnowcraftConnectionError, match="not open"):
             conn.cursor()
 
     def test_execute_calls_cursor_execute(self) -> None:
@@ -189,7 +189,7 @@ class TestCursorAndExecute:
         mock_cursor = MagicMock()
         mock_cursor.execute.side_effect = snowflake.connector.Error("syntax error")
         conn._raw_conn.cursor.return_value = mock_cursor
-        with pytest.raises(SnowforgeConnectionError, match="Query execution failed"):
+        with pytest.raises(SnowcraftConnectionError, match="Query execution failed"):
             conn.execute("BAD SQL")
 
 
@@ -200,7 +200,7 @@ class TestCursorAndExecute:
 
 class TestContextManager:
     def test_enter_calls_connect(self) -> None:
-        conn = SnowforgeConnection(account="a", user="u", password="p")
+        conn = SnowcraftConnection(account="a", user="u", password="p")
         mock_raw = MagicMock()
         with patch("snowflake.connector.connect", return_value=mock_raw):
             with conn as c:
@@ -208,7 +208,7 @@ class TestContextManager:
                 assert conn._raw_conn is mock_raw
 
     def test_exit_calls_close(self) -> None:
-        conn = SnowforgeConnection(account="a", user="u", password="p")
+        conn = SnowcraftConnection(account="a", user="u", password="p")
         mock_raw = MagicMock()
         with patch("snowflake.connector.connect", return_value=mock_raw):
             with conn:
@@ -217,7 +217,7 @@ class TestContextManager:
         assert conn._raw_conn is None
 
     def test_exit_closes_even_on_exception(self) -> None:
-        conn = SnowforgeConnection(account="a", user="u", password="p")
+        conn = SnowcraftConnection(account="a", user="u", password="p")
         mock_raw = MagicMock()
         with patch("snowflake.connector.connect", return_value=mock_raw):
             with pytest.raises(ValueError):

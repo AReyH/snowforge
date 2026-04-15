@@ -12,7 +12,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from snowcraft.connection import SnowforgeConnection
+from snowcraft.connection import SnowcraftConnection
 
 # ---------------------------------------------------------------------------
 # Unit test fixtures — fully mocked, no real Snowflake connection
@@ -32,13 +32,13 @@ def mock_cursor(mocker: pytest.fixture) -> MagicMock:  # type: ignore[type-arg]
 
 @pytest.fixture
 def mock_conn(mocker: pytest.fixture, mock_cursor: MagicMock) -> MagicMock:  # type: ignore[type-arg]
-    """A MagicMock that behaves like a SnowforgeConnection.
+    """A MagicMock that behaves like a SnowcraftConnection.
 
     The ``.execute()`` method returns ``mock_cursor`` by default. Individual
     tests can override ``mock_cursor.fetchone.return_value`` or
     ``mock_cursor.fetchall.return_value`` to simulate query results.
     """
-    conn = mocker.MagicMock(spec=SnowforgeConnection)
+    conn = mocker.MagicMock(spec=SnowcraftConnection)
     conn.execute.return_value = mock_cursor
     conn.cursor.return_value = mock_cursor
     return conn
@@ -59,8 +59,8 @@ def _integration_skip_reason() -> str:
 
 
 @pytest.fixture(scope="session")
-def integration_conn() -> SnowforgeConnection:  # type: ignore[return]
-    """A live SnowforgeConnection for integration tests.
+def integration_conn() -> SnowcraftConnection:  # type: ignore[return]
+    """A live SnowcraftConnection for integration tests.
 
     Automatically skips the test when ``SNOWFLAKE_ACCOUNT`` is not set.
     The connection is opened once per test session and closed at teardown.
@@ -68,21 +68,21 @@ def integration_conn() -> SnowforgeConnection:  # type: ignore[return]
     if not os.environ.get(_INTEGRATION_ENV_VAR):
         pytest.skip(_integration_skip_reason())
 
-    conn = SnowforgeConnection()
+    conn = SnowcraftConnection()
     conn.connect()
     yield conn  # type: ignore[misc]
     conn.close()
 
 
 @pytest.fixture(scope="session", autouse=False)
-def integration_database(integration_conn: SnowforgeConnection) -> None:
-    """Create the SNOWFORGE_TEST database and tear it down after the session.
+def integration_database(integration_conn: SnowcraftConnection) -> None:
+    """Create the SNOWCRAFT_TEST database and tear it down after the session.
 
     This fixture is NOT autouse so integration test modules must request it
     explicitly with ``@pytest.mark.usefixtures("integration_database")``.
     Never run this fixture against a production account.
     """
-    integration_conn.execute("CREATE DATABASE IF NOT EXISTS SNOWFORGE_TEST")
-    integration_conn.execute("CREATE SCHEMA IF NOT EXISTS SNOWFORGE_TEST.PUBLIC")
+    integration_conn.execute("CREATE DATABASE IF NOT EXISTS SNOWCRAFT_TEST")
+    integration_conn.execute("CREATE SCHEMA IF NOT EXISTS SNOWCRAFT_TEST.PUBLIC")
     yield  # type: ignore[misc]
-    integration_conn.execute("DROP DATABASE IF EXISTS SNOWFORGE_TEST")
+    integration_conn.execute("DROP DATABASE IF EXISTS SNOWCRAFT_TEST")

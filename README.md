@@ -74,9 +74,9 @@ WHEN NOT MATCHED THEN INSERT ("order_id", "status", "updated_at")
 ### Execute against Snowflake
 
 ```python
-from snowcraft import SnowforgeConnection, MergeBuilder
+from snowcraft import SnowcraftConnection, MergeBuilder
 
-with SnowforgeConnection() as conn:       # reads SNOWFLAKE_* env vars
+with SnowcraftConnection() as conn:       # reads SNOWFLAKE_* env vars
     result = MergeBuilder(
         conn=conn,
         target_table="MYDB.PUBLIC.ORDERS",
@@ -124,7 +124,7 @@ MergeBuilder(
     source_query="SELECT order_id, status, updated_at FROM MYDB.STAGING.ORDERS",
     match_keys=["order_id"],
     watermark_column="updated_at",
-    watermark_table="MYDB.PUBLIC.SNOWFORGE_WATERMARKS",
+    watermark_table="MYDB.PUBLIC.SNOWCRAFT_WATERMARKS",
 ).execute()
 # On the first run: loads everything.
 # On subsequent runs: injects WHERE updated_at > <last_max> automatically.

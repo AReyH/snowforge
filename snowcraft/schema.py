@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from snowcraft.connection import SnowforgeConnection
+from snowcraft.connection import SnowcraftConnection
 from snowcraft.exceptions import SchemaError
 
 
@@ -278,7 +278,7 @@ class SchemaInspector:
     consistent privilege requirements and stable result formats.
 
     Args:
-        conn: An open ``SnowforgeConnection``.
+        conn: An open ``SnowcraftConnection``.
 
     Example:
         inspector = SchemaInspector(conn)
@@ -287,7 +287,7 @@ class SchemaInspector:
         print(diff.to_markdown())
     """
 
-    def __init__(self, conn: SnowforgeConnection) -> None:
+    def __init__(self, conn: SnowcraftConnection) -> None:
         self._conn = conn
 
     def get_columns(self, table: str) -> list[ColumnDef]:

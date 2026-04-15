@@ -18,7 +18,7 @@ from typing import Literal
 import sqlglot
 import sqlglot.expressions as exp
 
-from snowcraft.connection import SnowforgeConnection
+from snowcraft.connection import SnowcraftConnection
 from snowcraft.exceptions import MergeError
 from snowcraft.utils import build_table_expr, quote_identifier
 
@@ -138,7 +138,7 @@ class MergeBuilder:
     travel via Snowflake's parameterized query interface.
 
     Args:
-        conn: An open (or to-be-opened) ``SnowforgeConnection``.
+        conn: An open (or to-be-opened) ``SnowcraftConnection``.
         target_table: Fully-qualified target table, e.g. ``"DB.SCHEMA.TABLE"``.
         source_query: Any ``SELECT`` statement whose result set is the source.
         match_keys: Column names that uniquely identify a row across source and
@@ -182,7 +182,7 @@ class MergeBuilder:
 
     def __init__(
         self,
-        conn: SnowforgeConnection,
+        conn: SnowcraftConnection,
         target_table: str,
         source_query: str,
         match_keys: list[str],

@@ -11,9 +11,9 @@ Connection
 ~~~~~~~~~~
 .. code-block:: python
 
-    from snowcraft import SnowforgeConnection
+    from snowcraft import SnowcraftConnection
 
-    with SnowforgeConnection() as conn:
+    with SnowcraftConnection() as conn:
         conn.execute("SELECT CURRENT_USER()")
 
 MERGE / Incremental loads
@@ -68,16 +68,16 @@ Exceptions
 ~~~~~~~~~~
 .. code-block:: python
 
-    from snowcraft.exceptions import SnowforgeError, MergeError
+    from snowcraft.exceptions import SnowcraftError, MergeError
 """
 
-from snowcraft.connection import SnowforgeConnection
+from snowcraft.connection import SnowcraftConnection
 from snowcraft.exceptions import (
     ConnectionError,
     MergeError,
     ProfilerError,
     SchemaError,
-    SnowforgeError,
+    SnowcraftError,
 )
 from snowcraft.merge import MergeBuilder, MergeResult
 from snowcraft.profiler import CostSummary, QueryProfiler, QuerySummary
@@ -86,7 +86,7 @@ from snowcraft.schema import ColumnDef, SchemaDiff, SchemaInspector
 
 __all__ = [
     # Connection
-    "SnowforgeConnection",
+    "SnowcraftConnection",
     # Merge
     "MergeBuilder",
     "MergeResult",
@@ -102,7 +102,7 @@ __all__ = [
     "SCDManager",
     "SCDResult",
     # Exceptions
-    "SnowforgeError",
+    "SnowcraftError",
     "ConnectionError",
     "SchemaError",
     "MergeError",

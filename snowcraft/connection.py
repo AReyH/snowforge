@@ -13,10 +13,10 @@ from typing import Any
 import snowflake.connector
 import snowflake.connector.cursor
 
-from snowcraft.exceptions import ConnectionError as SnowforgeConnectionError
+from snowcraft.exceptions import ConnectionError as SnowcraftConnectionError
 
 
-class SnowforgeConnection:
+class SnowcraftConnection:
     """A thin wrapper around ``snowflake.connector.connect()`` with env var support.
 
     All connection parameters fall back to the corresponding ``SNOWFLAKE_*``
@@ -42,7 +42,7 @@ class SnowforgeConnection:
             be resolved from arguments or environment variables.
 
     Example:
-        with SnowforgeConnection() as conn:
+        with SnowcraftConnection() as conn:
             cursor = conn.execute("SELECT CURRENT_USER()")
             print(cursor.fetchone())
     """
@@ -82,7 +82,7 @@ class SnowforgeConnection:
         if not self._password:
             missing.append("password (or SNOWFLAKE_PASSWORD)")
         if missing:
-            raise SnowforgeConnectionError(
+            raise SnowcraftConnectionError(
                 "Missing required Snowflake connection parameters: " + ", ".join(missing)
             )
 
@@ -116,7 +116,7 @@ class SnowforgeConnection:
         try:
             self._raw_conn = snowflake.connector.connect(**self._build_connect_kwargs())
         except snowflake.connector.Error as exc:
-            raise SnowforgeConnectionError(
+            raise SnowcraftConnectionError(
                 f"Failed to connect to Snowflake account '{self._account}': {exc}"
             ) from exc
 
@@ -140,8 +140,8 @@ class SnowforgeConnection:
             ConnectionError: If the connection has not been opened yet.
         """
         if self._raw_conn is None:
-            raise SnowforgeConnectionError(
-                "Connection is not open. Use SnowforgeConnection as a context manager "
+            raise SnowcraftConnectionError(
+                "Connection is not open. Use SnowcraftConnection as a context manager "
                 "or call .connect() explicitly before calling .cursor()."
             )
         return self._raw_conn.cursor()
@@ -169,14 +169,14 @@ class SnowforgeConnection:
         try:
             cur.execute(sql, params)
         except snowflake.connector.Error as exc:
-            raise SnowforgeConnectionError(f"Query execution failed: {exc}") from exc
+            raise SnowcraftConnectionError(f"Query execution failed: {exc}") from exc
         return cur
 
     # ------------------------------------------------------------------
     # Context manager protocol
     # ------------------------------------------------------------------
 
-    def __enter__(self) -> SnowforgeConnection:
+    def __enter__(self) -> SnowcraftConnection:
         self.connect()
         return self
 

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from snowcraft.connection import SnowforgeConnection
+from snowcraft.connection import SnowcraftConnection
 from snowcraft.exceptions import MergeError
 from snowcraft.merge import MergeBuilder, MergeResult
 from snowcraft.utils import quote_identifier, quote_table
@@ -55,7 +55,7 @@ class SCDManager:
        columns differ.
 
     Args:
-        conn: An open ``SnowforgeConnection``.
+        conn: An open ``SnowcraftConnection``.
         target_table: Fully-qualified SCD dimension table, e.g.
             ``"DB.DW.DIM_CUSTOMER"``.
         source_query: A ``SELECT`` statement whose output is the incoming data.
@@ -82,7 +82,7 @@ class SCDManager:
 
     def __init__(
         self,
-        conn: SnowforgeConnection,
+        conn: SnowcraftConnection,
         target_table: str,
         source_query: str,
         business_keys: list[str],

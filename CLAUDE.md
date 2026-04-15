@@ -113,7 +113,7 @@ pytest tests/unit/ -v
 export SNOWFLAKE_ACCOUNT=your_account
 export SNOWFLAKE_USER=your_user
 export SNOWFLAKE_PASSWORD=your_password
-export SNOWFLAKE_DATABASE=SNOWFORGE_TEST
+export SNOWFLAKE_DATABASE=SNOWCRAFT_TEST
 export SNOWFLAKE_SCHEMA=PUBLIC
 export SNOWFLAKE_WAREHOUSE=COMPUTE_WH
 export SNOWFLAKE_ROLE=SYSADMIN
@@ -134,7 +134,7 @@ context manager for safe connection lifecycle management.
 
 **Public API:**
 ```python
-SnowforgeConnection(
+SnowcraftConnection(
     account: str | None = None,   # falls back to SNOWFLAKE_ACCOUNT env var
     user: str | None = None,
     password: str | None = None,
@@ -145,7 +145,7 @@ SnowforgeConnection(
 )
 
 # Usage
-with SnowforgeConnection() as conn:
+with SnowcraftConnection() as conn:
     conn.execute("SELECT CURRENT_USER()")
 ```
 
@@ -166,7 +166,7 @@ update clauses, and insert clauses.
 **Public API:**
 ```python
 MergeBuilder(
-    conn: SnowforgeConnection,
+    conn: SnowcraftConnection,
     target_table: str,              # "DATABASE.SCHEMA.TABLE" fully qualified
     source_query: str,              # Any SELECT statement
     match_keys: list[str],          # Columns that uniquely identify a row
@@ -223,7 +223,7 @@ migration planning.
 
 **Public API:**
 ```python
-SchemaInspector(conn: SnowforgeConnection)
+SchemaInspector(conn: SnowcraftConnection)
 
 SchemaInspector.get_columns(table: str) -> list[ColumnDef]
 SchemaInspector.diff(source: str, target: str) -> SchemaDiff
@@ -265,7 +265,7 @@ surface expensive queries, slow patterns, and cost attribution.
 
 **Public API:**
 ```python
-QueryProfiler(conn: SnowforgeConnection)
+QueryProfiler(conn: SnowcraftConnection)
 
 QueryProfiler.top_expensive(
     n: int = 20,
@@ -323,7 +323,7 @@ Slowly Changing Dimension helpers for Type 1 (overwrite) and Type 2 (versioned h
 **Public API:**
 ```python
 SCDManager(
-    conn: SnowforgeConnection,
+    conn: SnowcraftConnection,
     target_table: str,
     source_query: str,
     business_keys: list[str],
@@ -372,7 +372,7 @@ class SCDResult:
 Raise from the custom exception hierarchy in `exceptions.py`:
 
 ```python
-SnowforgeError           # Base
+SnowcraftError           # Base
 ├── ConnectionError      # Can't connect / bad credentials
 ├── SchemaError          # Schema validation failures
 ├── MergeError           # MERGE execution failures
@@ -380,7 +380,7 @@ SnowforgeError           # Base
 ```
 
 Always include the original Snowflake exception as the `__cause__` when
-re-raising (`raise SnowforgeError("...") from original_exception`).
+re-raising (`raise SnowcraftError("...") from original_exception`).
 
 ### SQL style (for generated SQL)
 
@@ -403,7 +403,7 @@ without touching a real warehouse.
 # Example pattern in tests/conftest.py
 @pytest.fixture
 def mock_conn(mocker):
-    conn = mocker.MagicMock(spec=SnowforgeConnection)
+    conn = mocker.MagicMock(spec=SnowcraftConnection)
     conn.execute.return_value = mocker.MagicMock()
     conn.execute.return_value.fetchall.return_value = []
     return conn
@@ -415,7 +415,7 @@ Every module must have >90% unit test coverage. Coverage is enforced in CI.
 
 Integration tests live in `tests/integration/` and are skipped if the
 `SNOWFLAKE_ACCOUNT` environment variable is not set. They use a dedicated
-`SNOWFORGE_TEST` database that is created and torn down by the test session's
+`SNOWCRAFT_TEST` database that is created and torn down by the test session's
 `conftest.py` fixtures.
 
 Never use production credentials or production databases in tests.

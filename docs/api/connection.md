@@ -1,3 +1,3 @@
 # Connection
 
-::: snowcraft.connection.SnowforgeConnection
+::: snowcraft.connection.SnowcraftConnection

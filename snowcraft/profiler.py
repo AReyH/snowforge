@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Literal
 
-from snowcraft.connection import SnowforgeConnection
+from snowcraft.connection import SnowcraftConnection
 from snowcraft.exceptions import ProfilerError
 
 # Default USD cost per credit. Enterprise vs. Business Critical pricing differs;
@@ -290,7 +290,7 @@ class QueryProfiler:
     ``SNOWFLAKE`` database.
 
     Args:
-        conn: An open ``SnowforgeConnection``.
+        conn: An open ``SnowcraftConnection``.
 
     Example:
         profiler = QueryProfiler(conn)
@@ -299,7 +299,7 @@ class QueryProfiler:
             print(q.query_id, q.execution_time_ms, q.optimization_hints)
     """
 
-    def __init__(self, conn: SnowforgeConnection) -> None:
+    def __init__(self, conn: SnowcraftConnection) -> None:
         self._conn = conn
 
     def top_expensive(
