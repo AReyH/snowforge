@@ -335,7 +335,7 @@ class QueryProfiler:
 
         try:
             cur = self._conn.execute(sql, tuple(params))
-            rows = cur.fetchall()
+            rows: list[tuple[Any, ...]] = [tuple(r) for r in cur.fetchall()]
         except Exception as exc:
             raise ProfilerError(
                 f"Failed to query QUERY_HISTORY (check that your role has access "
@@ -371,11 +371,11 @@ class QueryProfiler:
 
         try:
             cur = self._conn.execute(sql, params)
-            rows = cur.fetchall()
+            rows_fs: list[tuple[Any, ...]] = [tuple(r) for r in cur.fetchall()]
         except Exception as exc:
             raise ProfilerError(f"Failed to query QUERY_HISTORY for full scans: {exc}") from exc
 
-        return [_row_to_query_summary(row) for row in rows]
+        return [_row_to_query_summary(row) for row in rows_fs]
 
     def warehouse_cost(
         self,

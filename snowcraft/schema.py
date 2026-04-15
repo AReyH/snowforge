@@ -306,7 +306,7 @@ class SchemaInspector:
         query = _COLUMNS_QUERY.format(database=database)
         try:
             cur = self._conn.execute(query, (database, schema, table_name))
-            rows = cur.fetchall()
+            rows: list[tuple[Any, ...]] = [tuple(r) for r in cur.fetchall()]
         except Exception as exc:
             raise SchemaError(f"Failed to fetch column metadata for '{table}': {exc}") from exc
 
