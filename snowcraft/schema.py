@@ -8,6 +8,7 @@ classifies changes as breaking or non-breaking.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any
 
 from snowcraft.connection import SnowforgeConnection
 from snowcraft.exceptions import SchemaError
@@ -234,7 +235,7 @@ def _parse_table_ref(table: str) -> tuple[str, str, str]:
     return parts[0], parts[1], parts[2]
 
 
-def _build_column_def(row: tuple[object, ...]) -> ColumnDef:
+def _build_column_def(row: tuple[Any, ...]) -> ColumnDef:
     """Construct a ``ColumnDef`` from an ``INFORMATION_SCHEMA.COLUMNS`` row."""
     (
         col_name,

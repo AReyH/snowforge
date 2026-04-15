@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Literal
+from typing import Any, Literal
 
 from snowcraft.connection import SnowforgeConnection
 from snowcraft.exceptions import ProfilerError
@@ -79,7 +79,7 @@ class CostSummary:
 # ---------------------------------------------------------------------------
 
 
-def _generate_hints(row: dict[str, object]) -> list[str]:
+def _generate_hints(row: dict[str, Any]) -> list[str]:
     """Produce a list of optimization hints from a QUERY_HISTORY row dict.
 
     Args:
@@ -226,7 +226,7 @@ ORDER BY 2 DESC
 # ---------------------------------------------------------------------------
 
 
-def _row_to_query_summary(row: tuple[object, ...]) -> QuerySummary:
+def _row_to_query_summary(row: tuple[Any, ...]) -> QuerySummary:
     """Convert a raw QUERY_HISTORY result row into a ``QuerySummary``."""
     (
         query_id,
